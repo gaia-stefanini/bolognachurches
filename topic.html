@@ -2,50 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Topic - Semantic Web Project</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header>
         <nav class="navbar">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="topic.html">Topic</a></li>
-                <li><a href="methodology.html" class="active">Methodology</a></li>
+                <li><a href="topic.html" class="active">Topic</a></li>
+                <li><a href="methodology.html">Methodology</a></li>
                 <li><a href="process.html">Process</a></li>
                 <li><a href="challenges.html">Challenges</a></li>
             </ul>
         </nav>
     </header>
+    
     <main class="container">
         <section class="card">
-            <h2>General Methodology</h2>
-            <h3>The Process</h3>
-            <h4>1 – Selecting the topic</h4>
-            <p>The first step consisted in the selection of a cultural entity that already existed in the <a href="https://dati.beniculturali.it/arco/index.php">ArCo</a> and <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a> knowledge graphs and could profit from the addition of new information. We chose to research the <a href="https://it.wikipedia.org/wiki/Basilica_patriarcale_di_San_Domenico">Basilica di San Domenico</a> and the <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">Basilica di San Petronio</a> because they are two of the most important churches in Bologna, relevant on religious, architectural, artistic, and social levels.</p>
-            <h4>2 – Analysis of ontologies</h4>
-            <p>After choosing our topic, we analyzed the two knowledge graphs we had already decided to use. We opted to query both <a href="https://dati.beniculturali.it/arco/index.php">ArCo</a> and <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a> in order to understand their differences and similarities. We explored their ontologies to identify properties and classes that describe churches, religious buildings, and cultural heritage entities at large.</p>
-            <h4>3 – Creating SPARQL queries</h4>
-            <p>The first practical stage of the project was the creation of several SPARQL queries needed to retrieve information from the knowledge graphs. The questions our queries needed to answer were simple at first, such as whether the two churches already existed as entities in the graphs, and then became more complicated as we tried to identify and solve information gaps. The SPARQL keywords used in this stage are: OPTIONAL, DISTINCT, UNION, FILTER and REGEX, LIMIT, ORDER BY.</p>
-            <h4>4 – Identifying information gaps</h4>
-            <p>We completed this step by comparing the properties our two resources already possessed with the properties we had originally identified during our initial analysis of the knowledge graphs. Out of all the gaps we identified, we focused only on those whose information could be retrieved and verified through external sources.</p>
-            <h4>5 – Prompting the LLMs</h4>
-            <p>The next step consisted in designing targeting prompts through three different techniques: zero-shot, few-shot, and chain-of-thought prompting. These prompts were later submitted to <a href="https://chatgpt.com/">ChatGPT</a>, <a href="https://gemini.google.com/?hl=it">Gemini</a> and <a href="https://www.deepseek.com/">DeepSeek</a> in order to retrieve useful information to fill the gaps. The outputs were then compared with reliable sources such as official websites of the churches, museums, or guides.</p>
-            <h4>6 – Creating RDF triples</h4>
-            <p>After retrieving the information we needed, we used prompts and LLMs to also create new RDF triples meant to enrich the two knowledge graphs. The already existing vocabulary was in both cases sufficient for our purpose, and we therefore didn’t have to suggest new entries for the ontologies.</p>
-            <h4>7 – Website development</h4>
-            <p>After finishing our research and enrichment, we focused on developing a navigable website explaining the process we carried out to complete this project.</p>
-            <br>
-            <h3>Tools Used</h3>
-            <p><li><a href="https://dati.beniculturali.it/arco/index.php">ArCo</a></li></p>
-            <p><li><a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a></li></p>
-            <p><li><a href="https://dati.cultura.gov.it/sparql">Virtuoso</a></li></p>
-            <p><li><a href="https://chatgpt.com/">ChatGPT</a></li></p>
-            <p><li><a href="https://gemini.google.com/?hl=it">Gemini</a></li></p>
-            <p><li><a href="https://www.deepseek.com/">DeepSeek</a></li></p>
-            <p><li><a href="https://yasgui.triply.cc/">Yasgui</a></li></p>
-            <p><li><a href="https://github.com/">Github</a></li></p>
+            <h2>Bologna's churches</h2>
+            
+            <!-- Your original text and custom styled links preserved exactly -->
+            <p>
+                Bologna has some of the most important religious cultural heritage monuments in Italy, full of history that deserved to get particular attention in our project. Thus, our natural choice was oriented to these two most emblematic churches located in the city centre: <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">San Petronio</a> and <a href="https://it.wikipedia.org/wiki/Basilica_patriarcale_di_San_Domenico">San Domenico</a>.
+            </p>
+
+            <!-- PICTURE 1: SAN PETRONIO -->
+            <div style="text-align: center; margin: 35px 0 20px 0; padding-top: 15px; border-top: 1px solid #eee;">
+                <img src="topic-image1.jpg" alt="San Petronio Screenshot" style="max-width:100%; height:auto; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.08);">
+                <p style="font-size: 0.9rem; color: #666; font-style: italic; margin-top: 10px;"> </p>
+            </div>
+
+            <!-- PICTURE 2: SAN DOMENICO -->
+            <div style="text-align: center; margin: 35px 0 10px 0; padding-top: 15px; border-top: 1px solid #eee;">
+                <img src="topic-image2.png.jpg" alt="San Domenico Screenshot" style="max-width:100%; height:auto; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.08);">
+                <p style="font-size: 0.9rem; color: #666; font-style: italic; margin-top: 10px;"> </p>
+            </div>
+
         </section>
     </main>
+
 </body>
 </html>
