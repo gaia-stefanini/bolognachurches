@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Process - Semantic Web Project</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="topic.html">Topic</a></li>
+                <li><a href="methodology.html">Methodology</a></li>
+                <li><a href="process.html" class="active">Process</a></li>
+                <li><a href="challenges.html">Challenges</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="card">
+            <h2>The Process</h2>
+            <h3>Identifying resources and gaps</h3>
+            <p>Our project began by verifying the existence of the two churches we've decided to research. For the <a href="https://it.wikipedia.org/wiki/Basilica_patriarcale_di_San_Domenico">Basilica di San Domenico</a>, we decided to use the knowledge graph <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a>, while for the <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">Basilica di San Petronio</a> we opted for <a href="https://dati.beniculturali.it/arco/index.php">ArCo</a>.</p>
+            <h4>Basilica di San Domenico</h4>
+            <p>Our first step was writing a zero-shot prompt for <a href="https://gemini.google.com/app?hl=it">Gemini</a> in order to formulate a SPARQL query to find basic information reguarding the church.</p>
+            <img src="domenico gemini.png>
+            <p>This was the query we got in response:</p>
+            <img src="snippet.png">
+            <p>By executing this query, we got the following descriptive results:</p>
+            <img src="descriptive results.png">
+            <p>Since this outcome was not accurate for our project, we decided to use the few-shot prompting technique with <a href="https://chat.deepseek.com/">DeepSeek</a> by providing samples of the SPARQL queries we needed.</p>
+            <img src="deepseek 1.png">
+            <p>Following is the new query we got from <a href="https://chat.deepseek.com/">DeepSeek</a>, in which we manually changed the ID number to the one of <a href="https://it.wikipedia.org/wiki/Basilica_patriarcale_di_San_Domenico">San Domenico</a> (Q862602).</p>
+            <img src="manually.png">
+            <p>The new query revealed more relevant results for our research:</p>
+            <img src="results deepseek.png">
+            <p>Starting from these results, we then formulated three new queries in order to underline what properties our resource already possessed.</p>
+            <p>Query n. 1:</p>
+            <img src="properties 1.png">
+            <img src="properties 2.png">
+            <p>Query n. 2:</p>
+            <img src="slide 7a.png">
+            <img src="slide 7b.png">
+            <p>Query n. 3:</p>
+            <img src="slide 7c.png">
+            <img src="slide 7d.png">
+            <h4>Basilica di San Petronio</h4>
+            <p>First, we created a query that would allow us to find what entities related to the church of San Petronio already existed on <a href="https://dati.beniculturali.it/arco/index.php">ArCo</a>.</p>
+            <pre style="background:#eef; padding:15px; border-radius:5px; overflow-x:auto;"><code>PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX arco: &lt;https://w3id.org/arco/ontology/arco/&gt;
+
+SELECT DISTINCT ?site ?label
+WHERE {
+   { ?site rdfs:label ?label.
+   FILTER(REGEX(?label, "chiesa di san petronio", "i")) 
+   }
+UNION
+   { ?site rdfs:label ?label.
+   FILTER(REGEX(?label, "basilica di san petronio", "i"))            
+   }
+}
+ORDER BY(?site)</code></pre>
+			<img src="query 1.png">
+            <p>In the results above, we found two entities labeled as "Chiesa di San Petronio", both of them referring to the same church in Bologna. It was interesting to notice, though, that one of them had only little information, while the other one contained many more properties.</p>
+            <img src="petronio 1.png">
+            <img src="petronio 2.png">
+            <p>We therefore decided to add missing information that we deemed relevant to the second entity and then link the two resources together.</p>
+            <p>In order to do so, we first executed a second query to make sure that the two pieces of information we wanted to add, a description and the commissioner, didn't already exist somewhere else without being connected to the church.</p>
+            <pre style="background:#eef; padding:15px; border-radius:5px; overflow-x:auto;"><code>PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;https://w3id.org/arco/ontology/core/&gt;
+PREFIX a-cd: &lt;https://w3id.org/arco/ontology/contextdescription/&gt;
+
+SELECT DISTINCT ?site ?label ?value
+WHERE {
+   ?site rdfs:label ?label.
+   FILTER(REGEX(?label, "chiesa di san petronio", "i")) 
+   OPTIONAL {
+   ?site core:description ?value .
+   }
+   OPTIONAL {
+   ?site a-cd:hasCommittent ?value.
+   }
+}</code></pre>
+			<p>The results showed that neither of these properties was already present, so we proceeded with our enrichment.</p>
+            <img src="query 2.png">
+            <br>
+            <h3>LLMs Prompting and Comparison</h3>
+            <p>For this part of the project, we decided to compare mostly <a href="https://chatgpt.com/">ChatGPT</a> and <a href="http://gemini.google.com/app?hl">Gemini</a>. We used the zero-shot and few-shot prompting technicques to gather the missing information related to the <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">Basilica di San Petronio</a>, which we later verified through the <a href="https://www.basilicadisanpetronio.org/">official website</a> of the church and <a href="https://www.museionline.info/">Museoitalia</a>, an Italian website containing up-to-date information about Italy's artistic and cultural heritage.</p>
+            <p>The third prompting technique, chain-of-thought prompting, has been used later in the project to create new RDF triples.</p>
+            <h4>Zero-shot prompting</h4>
+            <p>We used the same prompt for both <a href="https://chatgpt.com/">ChatGPT</a> and <a href="http://gemini.google.com/app?hl">Gemini</a>, and the difference in the output was immediately visibile.</p>
+            <p>First, we used ChatGPT. This LLM used<a href="https://www.basilicadisanpetronio.org/">San Petronio's official website</a> and <a href="https://www.museionline.info/">Museoitalia</a> as sources. Furthermore, it only provided measurements in the metrical system and its style was overall simpler and less formal.</p>
+            <img src="chat dimension.png">
+            <p>Gemini used instead <a href="https://it.wikipedia.org/wiki/Pagina_principale">Wikipedia</a> and the travel website <a href="https://www.mycityhunt.com/">myCityHunt</a> as source. Other than the measurements in both meters and feet, it also provided an image of the façade and the height of the bell tower. It mentioned the Cassini Meridian Line inside the church as well.</p>
+            <img src="gemini dimension 1.png">
+            <img src="gemini dimension 2.png">
+            <p>Our second prompt regarded a textual description of the church:</p>
+            <pre style="background:#eef; padding:15px; border-radius:5px; overflow-x:auto;"><code>Give me a short description of around 10 lines of the Basilica di San Petronio </code></pre>
+            <p>This time, the outputs were rather similar.</p>
+            <pre style="background:#eef; padding:15px; border-radius:5px; overflow-x:auto;"><code><b>ChatGPT:</b> The Basilica di San Petronio is one of the most important Gothic churches in Bologna. It stands prominently in Piazza Maggiore, at the heart of the historic city centre. The basilica is dedicated to Saint Petronius, the patron saint and former bishop of Bologna. Construction began in 1390, following a decision by the city's medieval government. It was designed by the architect Antonio di Vincenzo and was conceived as a civic monument. The building is remarkable for its enormous dimensions, measuring about 132 metres long and 60 metres wide. Its unfinished façade combines white marble with red brick and features elaborate Gothic decoration. The interior contains a vast nave, side chapels, monumental artworks, and a famous meridian line. The original project was even more ambitious, but financial and political difficulties prevented its completion. Today, San Petronio remains a major symbol of Bologna's religious heritage and civic identity.</code></pre>
+            <pre style="background:#eef; padding:15px; border-radius:5px; overflow-x:auto;"><code><b>Gemini:</b> Dominating Bologna's main square, Piazza Maggiore, the Basilica di San Petronio is one of the world's largest Gothic structures and the biggest brick church ever built. Construction began in 1390 under architect Antonio di Vincenzo as a grand monument to civic pride, commissioned by the city's commune rather than the Papacy. Its iconic exterior is instantly recognizable for its half-finished facade—marbled at the lower base by Jacopo della Quercia and raw, exposed brown brick above, after funding halted and papal intervention blocked plans to make it larger than St. Peter's. Inside, the vast three-aisled interior features soaring stone vaulting, 22 rich side chapels holding Renaissance masterpieces like Giovanni da Modena's frescoes, and the famous 67-meter Cassini Meridian Line drawn into the floor in 1655, which still functions as a precise astronomical calendar today.</code></pre>
+            <h4>Few-shot prompting</h4>
+            <p>Lastly, we used a few-shot prompting, meaning giving the LLM a few examples of the kind of output we were expectin. The goal here was to find some information about who commissioned the construction of the <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">Basilica di San Petronio</a> and the historical context in which it took place. The following is the prompt we used:</p>
+            <img src="prompt 2.png">
+            <p><a href="http://gemini.google.com/app?hl">Gemini</a> followed our instructions and provided a short and simple explanation according to the pattern we had supplied.</p>
+            <img src="gemini commissioner.png">
+            <p><a href="https://chatgpt.com/">ChatGPT</a>, on the other hand, didn't follow the prompt and returned more information than what we had asked. It provided two explanations, one slightly more concise than the other, but essentially repeated the same information twice to emphasize the different nature of the commission between the two examples and the target entity.</p>
+            <img src="chat commissioner 1.png">
+            <img src="chat commissioner 2.png">
+            <br>
+            <h3>Creating new RDF triples</h3>
+            <p>In this last part of the project as well, we decided to use two different strategies to create new RDF triples. For the <a href="https://it.wikipedia.org/wiki/Basilica_patriarcale_di_San_Domenico">Basilica di San Domenico</a> we opted to use only one long query, while for the <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">Basilica di San Petronio</a> we created three different ones.</p>
+            <h4>Basilica di San Domenico</h4>
+            <p>To formulate this query, we used the zero-shot prompting technique on <a href="https://www.deepseek.com/">DeepSeek</a>. These are the prompts and the reply:</p>
+            <img src="deepseek 2.png">
+            <img src="deepseek 3.png">
+            <p>And the following is the CONSTRUCT query that was supplied:</p>
+            <img src="construct14.png">
+            <p>We tried to execute it on <a href="https://yasgui.triply.cc/">Yasgui</a> but it gave us an error in line 3, so we corrected it:</p>
+            <img src="yasgui.png">
+            <p>We finally got our new triple as a result:</p>
+            <img src="yasgui triple.png">
+            <h4>Basilica di San Petronio</h4>
+            <p><u>1 - Description</u></p>
+            <p>To formulate this query we used the zero-shot chain-of-thought prompting technique on <a href="https://chatgpt.com/">ChatGPT</a>, asking it for both a SPARQL query and the resulting triple in Turtle syntax.</p>
+            <img src="chain 1.png">
+            <p>And this is the output we received:</p>
+            <img src="answer chain 1.png">
+            <p>By executing the query on <a href="https://yasgui.triply.cc/">Yasgui</a>, we received the new triple:</p>
+            <img src="triple 1.png">
+            <p><u>2 - Commissioner</u></p>
+            <p>Before creating this triple, we ran a query to know whether the Comune di Bologna was already an entity on Arco.</p>
+            <img src="query comune.png">
+            <p>Since there were no results, we decided to use “Comune di Bologna” as a literal for our new query and triple. Here, too, we followed the zero-shot chain-of-thought prompting technique on .</p>
+            <img src="chain 2.png">
+            <p>We again ran the query into <a href="https://yasgui.triply.cc/">Yasgui</a> and retrieved the new triple.</p>
+            <img src="triple 2.png">
+            <p><u>3 - Linking two resources</u></p>
+            <p>In this third case, we used a zero-shot prompting technique to formulate a new query and triple that would link the two resources relating to the <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">Basilica di San Petronio</a>, in order to make both of them more accessible, and in particular the one with less information.</p>
+            <p>This is the prompt we used on <a href="https://chatgpt.com/">ChatGPT</a>:</p>
+            <img src="prompt sameAs.png">
+            <p>The output consisted in the SPARQL CONSTRUCT query first and Turtle syntax later:</p>
+            <img src="sparql sameAs.png">
+            <img src="turtle sameAs.png">
+            <p>And finally, after executing the CONSTRUCT query on <a href="https://yasgui.triply.cc/">Yasgui</a>, we obtained the final triple.</p>
+            <img src="triple 3.png">
+        </section>
+    </main>
+    
+</body>
+</html>
