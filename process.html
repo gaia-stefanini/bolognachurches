@@ -22,11 +22,12 @@
             <h2>The Process</h2>
             <h3>Identifying resources and gaps</h3>
             <p>Our project began by verifying the existence of the two churches we've decided to research. For the <a href="https://it.wikipedia.org/wiki/Basilica_patriarcale_di_San_Domenico">Basilica di San Domenico</a>, we decided to use the knowledge graph <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a>, while for the <a href="https://it.wikipedia.org/wiki/Basilica_di_San_Petronio">Basilica di San Petronio</a> we opted for <a href="https://dati.beniculturali.it/arco/index.php">ArCo</a>.</p>
-            <h4>Basilica di San Domenico</h4>
+            <hr>
+			<h4>Basilica di San Domenico</h4>
             <p>Our first step was writing a zero-shot prompt for <a href="https://gemini.google.com/app?hl=it">Gemini</a> in order to formulate a SPARQL query to find basic information reguarding the church.</p>
             <img src="domenico gemini.png style="max-width: 100%; height: auto;">
             <p>This was the query we got in response:</p>
-            <img src="snippet.png" style="max-width: 100%; height: auto;">
+            <img src="snippet.png" style="width: 500; height: auto;">
             <p>By executing this query, we got the following descriptive results:</p>
             <img src="descriptive results.png" style="max-width: 100%; height: auto;">
             <p>Since this outcome was not accurate for our project, we decided to use the few-shot prompting technique with <a href="https://chat.deepseek.com/">DeepSeek</a> by providing samples of the SPARQL queries we needed.</p>
